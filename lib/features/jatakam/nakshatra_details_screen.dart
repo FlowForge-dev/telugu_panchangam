@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/source_reference_card.dart';
 import '../../domain/models/jatakam_models.dart';
 import '../../domain/models/source_reference.dart';
@@ -16,7 +17,7 @@ class NakshatraDetailsScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(nakshatra.name)),
+      appBar: AppBar(title: BilingualTitle(telugu: nakshatra.telugu, english: nakshatra.name)),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
@@ -29,10 +30,10 @@ class NakshatraDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(nakshatra.name, style: theme.textTheme.headlineSmall?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
-                Text(nakshatra.telugu, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
+                Text(nakshatra.telugu, style: theme.textTheme.headlineSmall?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
+                Text(nakshatra.name, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
                 const SizedBox(height: AppSpacing.md),
-                Text('Nakshatra ${nakshatra.index} of 27', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
+                Text('27లో ${nakshatra.index}వ నక్షత్రం', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
               ],
             ),
           ),
@@ -42,14 +43,14 @@ class NakshatraDetailsScreen extends StatelessWidget {
             decoration: BoxDecoration(color: theme.colorScheme.surfaceContainer, borderRadius: BorderRadius.circular(AppRadii.md)),
             child: Column(
               children: [
-                _Row('Ruling graha', '${nakshatra.ruler.transliteration} (${nakshatra.ruler.telugu})',
+                _Row('అధిపతి గ్రహం', '${nakshatra.ruler.telugu} (${nakshatra.ruler.transliteration})',
                     onTap: () => context.push('/jatakam/graha/${nakshatra.ruler.name}')),
-                _Row('Presiding deity', nakshatra.deity),
+                _Row('అధిదేవత', nakshatra.deity),
               ],
             ),
           ),
           const SizedBox(height: AppSpacing.xxl),
-          Text('Significance', style: theme.textTheme.titleMedium),
+          Text('ప్రాముఖ్యత', style: theme.textTheme.titleMedium),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'Detailed characteristics and interpretive significance of ${nakshatra.name} require a qualified '

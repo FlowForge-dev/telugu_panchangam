@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_state/repositories_scope.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/source_reference_card.dart';
 import '../../domain/models/source_reference.dart';
 
@@ -43,7 +44,7 @@ class _SourcesScreenState extends State<SourcesScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Sources & references')),
+      appBar: AppBar(title: const BilingualTitle(telugu: 'ఆధారాలు', english: 'Sources & references')),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [

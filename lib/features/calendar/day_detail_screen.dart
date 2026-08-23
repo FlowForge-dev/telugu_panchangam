@@ -72,19 +72,19 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
                         ],
                       ),
                       const SizedBox(height: AppSpacing.sm),
-                      Text('${day.masa.transliteration} · ${day.paksha.transliteration}', style: theme.textTheme.bodyMedium),
+                      Text('${day.masa.telugu} · ${day.paksha.telugu}', style: theme.textTheme.bodyMedium),
                       const SizedBox(height: AppSpacing.lg),
                       Row(
                         children: [
-                          Expanded(child: _InfoTile(label: 'Vāra', value: day.vara.transliteration, sub: day.vara.telugu)),
-                          Expanded(child: _InfoTile(label: 'Tithi', value: day.tithi.label, sub: day.tithi.telugu)),
+                          Expanded(child: _InfoTile(label: 'వారం', value: day.vara.telugu, sub: day.vara.transliteration)),
+                          Expanded(child: _InfoTile(label: 'తిథి', value: day.tithi.telugu, sub: day.tithi.label)),
                         ],
                       ),
                       const SizedBox(height: AppSpacing.lg),
                       _InfoTile(
-                        label: 'Nakshatra',
-                        value: day.nakshatra.name,
-                        sub: '${day.nakshatra.telugu} · Pada ${day.nakshatra.pada}',
+                        label: 'నక్షత్రం',
+                        value: day.nakshatra.telugu,
+                        sub: '${day.nakshatra.name} · Pada ${day.nakshatra.pada}',
                       ),
                     ],
                   ),
@@ -126,9 +126,9 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: Row(
                   children: [
-                    Expanded(child: _SkyTile(icon: Icons.wb_sunny_outlined, label: 'Sunrise', value: day.sunrise)),
+                    Expanded(child: _SkyTile(icon: Icons.wb_sunny_outlined, label: 'సూర్యోదయం', value: day.sunrise)),
                     const SizedBox(width: AppSpacing.md),
-                    Expanded(child: _SkyTile(icon: Icons.wb_twilight_outlined, label: 'Sunset', value: day.sunset)),
+                    Expanded(child: _SkyTile(icon: Icons.wb_twilight_outlined, label: 'సూర్యాస్తమయం', value: day.sunset)),
                   ],
                 ),
               ),
@@ -137,9 +137,9 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: Row(
                   children: [
-                    Expanded(child: _SkyTile(icon: Icons.nightlight_outlined, label: 'Moonrise', value: day.moonrise)),
+                    Expanded(child: _SkyTile(icon: Icons.nightlight_outlined, label: 'చంద్రోదయం', value: day.moonrise)),
                     const SizedBox(width: AppSpacing.md),
-                    Expanded(child: _SkyTile(icon: Icons.dark_mode_outlined, label: 'Moonset', value: day.moonset)),
+                    Expanded(child: _SkyTile(icon: Icons.dark_mode_outlined, label: 'చంద్రాస్తమయం', value: day.moonset)),
                   ],
                 ),
               ),

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../app_state/app_state.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/util/date_format.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../domain/models/profile_models.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
     final profile = appState.profile;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(title: const BilingualTitle(telugu: 'ప్రొఫైల్', english: 'Profile')),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
@@ -43,12 +44,12 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(profile?.name.isNotEmpty == true ? profile!.name : 'Add your name', style: theme.textTheme.titleLarge),
+                      Text(profile?.name.isNotEmpty == true ? profile!.name : 'మీ పేరు జోడించండి', style: theme.textTheme.titleLarge),
                       const SizedBox(height: 2),
                       Text(
                         profile?.hasBirthDetails == true
                             ? '${formatDateShort(profile!.birthDetails!.date)} · ${profile.birthDetails!.place.displayName}'
-                            : 'Birth details not added yet',
+                            : 'జనన వివరాలు జోడించలేదు',
                         style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                       ),
                     ],
@@ -65,18 +66,21 @@ class ProfileScreen extends StatelessWidget {
           _MenuGroup(children: [
             _MenuTile(
               icon: Icons.badge_outlined,
+              telugu: 'జనన వివరాలు',
               label: 'Birth details',
               subtitle: 'Date, time & place of birth',
               onTap: () => context.push('/profile/birth-details'),
             ),
             _MenuTile(
               icon: Icons.auto_awesome_outlined,
+              telugu: 'జాతకం',
               label: 'Jatakam',
               subtitle: 'Your personalised birth chart',
               onTap: () => context.go('/jatakam'),
             ),
             _MenuTile(
               icon: Icons.notifications_none_rounded,
+              telugu: 'నోటిఫికేషన్ ప్రాధాన్యతలు',
               label: 'Notification preferences',
               subtitle: 'Festival reminder timing',
               onTap: () => context.push('/notifications'),
@@ -86,16 +90,19 @@ class ProfileScreen extends StatelessWidget {
           _MenuGroup(children: [
             _MenuTile(
               icon: Icons.menu_book_outlined,
+              telugu: 'ఆధారాలు',
               label: 'Sources & references',
               onTap: () => context.push('/sources'),
             ),
             _MenuTile(
               icon: Icons.settings_outlined,
+              telugu: 'సెట్టింగ్‌లు',
               label: 'Settings',
               onTap: () => context.push('/settings'),
             ),
             _MenuTile(
               icon: Icons.info_outline_rounded,
+              telugu: 'గురించి & గోప్యత',
               label: 'About & privacy',
               onTap: () => context.push('/about'),
             ),
@@ -117,14 +124,14 @@ class ProfileScreen extends StatelessWidget {
     showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Your name'),
+        title: const Text('మీ పేరు • Your name'),
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: const InputDecoration(hintText: 'Enter your name'),
+          decoration: const InputDecoration(hintText: 'పేరు నమోదు చేయండి'),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('రద్దు')),
           FilledButton(
             onPressed: () {
               appState.saveProfile(
@@ -132,7 +139,7 @@ class ProfileScreen extends StatelessWidget {
               );
               Navigator.pop(context);
             },
-            child: const Text('Save'),
+            child: const Text('సేవ్'),
           ),
         ],
       ),
@@ -166,17 +173,27 @@ class _MenuGroup extends StatelessWidget {
 }
 
 class _MenuTile extends StatelessWidget {
-  const _MenuTile({required this.icon, required this.label, this.subtitle, required this.onTap});
+  const _MenuTile({required this.icon, required this.telugu, required this.label, this.subtitle, required this.onTap});
   final IconData icon;
+  final String telugu;
   final String label;
   final String? subtitle;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
       leading: Icon(icon),
-      title: Text(label),
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          Text(telugu),
+          const SizedBox(width: 6),
+          Text(label, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+        ],
+      ),
       subtitle: subtitle != null ? Text(subtitle!) : null,
       trailing: const Icon(Icons.chevron_right_rounded),
       onTap: onTap,

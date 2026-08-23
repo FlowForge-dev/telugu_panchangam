@@ -66,7 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               alignment: Alignment.topRight,
               child: Padding(
                 padding: const EdgeInsets.all(AppSpacing.lg),
-                child: TextButton(onPressed: _finish, child: const Text('Skip')),
+                child: TextButton(onPressed: _finish, child: const Text('దాటవేయండి')),
               ),
             ),
             Expanded(
@@ -88,10 +88,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           child: Icon(page.icon, size: 40, color: theme.colorScheme.onPrimaryContainer),
                         ),
                         const SizedBox(height: AppSpacing.xxl),
-                        Text(page.title, style: theme.textTheme.headlineMedium, textAlign: TextAlign.center),
+                        Text(page.teluguTitle, style: theme.textTheme.headlineMedium, textAlign: TextAlign.center),
                         const SizedBox(height: AppSpacing.xs),
                         Text(
-                          page.teluguTitle,
+                          page.title,
                           style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.secondary),
                           textAlign: TextAlign.center,
                         ),
@@ -135,7 +135,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       _controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
                     }
                   },
-                  child: Text(isLast ? 'Get started' : 'Next'),
+                  child: Text(isLast ? 'ప్రారంభించండి' : 'తదుపరి'),
                 ),
               ),
             ),

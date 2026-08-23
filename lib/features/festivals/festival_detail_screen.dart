@@ -68,7 +68,7 @@ class _Content extends StatelessWidget {
           flexibleSpace: FlexibleSpaceBar(
             titlePadding: const EdgeInsets.only(left: 56, bottom: AppSpacing.md, right: AppSpacing.lg),
             title: Text(
-              festival.name,
+              festival.teluguName,
               style: theme.textTheme.titleLarge,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -82,12 +82,19 @@ class _Content extends StatelessWidget {
                 ),
               ),
               padding: const EdgeInsets.fromLTRB(AppSpacing.lg, 64, AppSpacing.lg, AppSpacing.xxxl),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  festival.teluguName,
-                  style: theme.textTheme.headlineMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer),
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    festival.teluguName,
+                    style: theme.textTheme.headlineMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer),
+                  ),
+                  Text(
+                    festival.name,
+                    style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer),
+                  ),
+                ],
               ),
             ),
           ),
@@ -218,9 +225,9 @@ class _SectionTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
       children: [
-        Text(title, style: theme.textTheme.headlineSmall),
+        Text(telugu, style: theme.textTheme.headlineSmall),
         const SizedBox(width: AppSpacing.sm),
-        Text(telugu, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+        Text(title, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
       ],
     );
   }

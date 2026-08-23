@@ -78,7 +78,11 @@ class UpcomingEventTile extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(festival.name, style: theme.textTheme.titleMedium),
+                      Text(festival.teluguName, style: theme.textTheme.titleMedium),
+                      Text(
+                        festival.name,
+                        style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                      ),
                       const SizedBox(height: 2),
                       Text(
                         festival.shortSignificance,

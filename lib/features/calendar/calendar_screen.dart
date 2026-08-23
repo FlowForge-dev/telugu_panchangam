@@ -5,11 +5,12 @@ import 'package:provider/provider.dart';
 import '../../app_state/repositories_scope.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/util/date_format.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/calendar_day_cell.dart';
 import '../../data/mock/mock_seed_data.dart';
 import '../../domain/models/panchang_models.dart';
 
-const _weekdayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const _weekdayHeaders = ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'];
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -74,7 +75,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calendar'),
+        title: const BilingualTitle(telugu: 'పంచాంగం', english: 'Calendar'),
         actions: [
           IconButton(
             tooltip: 'Search',
@@ -99,7 +100,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      'Ugadi year: ${formatDateShort(kMockUgadiStart)} → ${formatDateShort(kMockNextUgadiStart)}',
+                      'ఉగాది సంవత్సరం: ${formatDateShort(kMockUgadiStart)} → ${formatDateShort(kMockNextUgadiStart)}',
                       style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -119,12 +120,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
                 Column(
                   children: [
-                    Text(formatMonthYear(_month), style: theme.textTheme.headlineSmall),
-                    if (_days[_month]?.masa != null)
-                      Text(
-                        _days[_month]!.masa.transliteration,
-                        style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                      ),
+                    Text(
+                      _days[_month]?.masa.telugu ?? formatMonthYear(_month),
+                      style: theme.textTheme.headlineSmall,
+                    ),
+                    Text(
+                      formatMonthYear(_month),
+                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                    ),
                   ],
                 ),
                 IconButton(
@@ -202,10 +205,10 @@ class _CalendarLegend extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Row(
         children: [
-          item(theme.colorScheme.primary, 'Festival'),
-          item(theme.colorScheme.secondary, 'Ekadashi / Purnima'),
-          item(theme.colorScheme.tertiary, 'Observance'),
-          item(theme.colorScheme.onSurfaceVariant, 'Amavasya'),
+          item(theme.colorScheme.primary, 'పండుగ'),
+          item(theme.colorScheme.secondary, 'ఏకాదశి / పౌర్ణమి'),
+          item(theme.colorScheme.tertiary, 'వ్రతం'),
+          item(theme.colorScheme.onSurfaceVariant, 'అమావాస్య'),
         ],
       ),
     );

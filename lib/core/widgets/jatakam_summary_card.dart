@@ -31,7 +31,7 @@ class JatakamSummaryCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Expanded(child: Text('Your Jatakam', style: theme.textTheme.titleLarge)),
+                  Expanded(child: Text('మీ జాతకం', style: theme.textTheme.titleLarge)),
                   if (jatakam.isMockCalculated) const MockDataBadge(),
                 ],
               ),
@@ -39,17 +39,17 @@ class JatakamSummaryCard extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: _Stat(label: 'Rāśi', value: jatakam.moonRashi.name, sub: jatakam.moonRashi.telugu),
+                    child: _Stat(label: 'రాశి', value: jatakam.moonRashi.telugu, sub: jatakam.moonRashi.name),
                   ),
                   Expanded(
                     child: _Stat(
-                      label: 'Nakshatra',
-                      value: jatakam.birthNakshatra.name,
-                      sub: '${jatakam.birthNakshatra.telugu} · Pada ${jatakam.birthNakshatraPada}',
+                      label: 'నక్షత్రం',
+                      value: jatakam.birthNakshatra.telugu,
+                      sub: '${jatakam.birthNakshatra.name} · Pada ${jatakam.birthNakshatraPada}',
                     ),
                   ),
                   Expanded(
-                    child: _Stat(label: 'Lagna', value: jatakam.lagna.name, sub: jatakam.lagna.telugu),
+                    child: _Stat(label: 'లగ్నం', value: jatakam.lagna.telugu, sub: jatakam.lagna.name),
                   ),
                 ],
               ),
@@ -57,7 +57,7 @@ class JatakamSummaryCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.lg),
                 Row(
                   children: [
-                    Text('View full chart', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary)),
+                    Text('పూర్తి చక్రం చూడండి', style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary)),
                     const SizedBox(width: 4),
                     Icon(Icons.arrow_forward_rounded, size: 16, color: theme.colorScheme.primary),
                   ],

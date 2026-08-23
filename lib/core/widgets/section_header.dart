@@ -32,11 +32,11 @@ class SectionHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: theme.textTheme.headlineSmall),
+                Text(teluguTitle ?? title, style: theme.textTheme.headlineSmall),
                 if (teluguTitle != null) ...[
                   const SizedBox(height: 2),
                   Text(
-                    teluguTitle!,
+                    title,
                     style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                   ),
                 ],

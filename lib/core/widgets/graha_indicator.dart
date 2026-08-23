@@ -44,9 +44,9 @@ class GrahaIndicator extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(position.graha.transliteration, style: theme.textTheme.titleMedium),
+                      Text(position.graha.telugu, style: theme.textTheme.titleMedium),
                       const SizedBox(width: 6),
-                      Text(position.graha.telugu, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                      Text(position.graha.transliteration, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                       if (position.isRetrograde) ...[
                         const SizedBox(width: 6),
                         Container(
@@ -62,7 +62,7 @@ class GrahaIndicator extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '${position.rashi.name} · House ${position.house} · ${position.degree.toStringAsFixed(1)}°',
+                    '${position.rashi.telugu} · భావం ${position.house} · ${position.degree.toStringAsFixed(1)}°',
                     style: theme.textTheme.bodySmall,
                   ),
                 ],

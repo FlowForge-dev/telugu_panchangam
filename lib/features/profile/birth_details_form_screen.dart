@@ -7,6 +7,7 @@ import '../../app_state/app_state.dart';
 import '../../app_state/repositories_scope.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/util/date_format.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../domain/models/profile_models.dart';
 
 class BirthDetailsFormScreen extends StatefulWidget {
@@ -86,7 +87,7 @@ class _BirthDetailsFormScreenState extends State<BirthDetailsFormScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Birth details')),
+      appBar: AppBar(title: const BilingualTitle(telugu: 'జనన వివరాలు', english: 'Birth details')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.huge),
         children: [
@@ -112,7 +113,7 @@ class _BirthDetailsFormScreenState extends State<BirthDetailsFormScreen> {
             ),
           ),
           const SizedBox(height: AppSpacing.xxl),
-          Text('Date of birth', style: theme.textTheme.titleMedium),
+          _FieldLabel(theme: theme, telugu: 'పుట్టిన తేదీ', english: 'Date of birth'),
           const SizedBox(height: AppSpacing.sm),
           _PickerField(
             icon: Icons.calendar_today_outlined,
@@ -128,7 +129,7 @@ class _BirthDetailsFormScreenState extends State<BirthDetailsFormScreen> {
             },
           ),
           const SizedBox(height: AppSpacing.xl),
-          Text('Time of birth', style: theme.textTheme.titleMedium),
+          _FieldLabel(theme: theme, telugu: 'పుట్టిన సమయం', english: 'Time of birth'),
           const SizedBox(height: AppSpacing.sm),
           _PickerField(
             icon: Icons.schedule_outlined,
@@ -152,7 +153,7 @@ class _BirthDetailsFormScreenState extends State<BirthDetailsFormScreen> {
             }).toList(),
           ),
           const SizedBox(height: AppSpacing.xl),
-          Text('Place of birth', style: theme.textTheme.titleMedium),
+          _FieldLabel(theme: theme, telugu: 'పుట్టిన స్థలం', english: 'Place of birth'),
           const SizedBox(height: AppSpacing.sm),
           TextField(
             controller: _placeController,
@@ -203,11 +204,31 @@ class _BirthDetailsFormScreenState extends State<BirthDetailsFormScreen> {
             width: double.infinity,
             child: FilledButton(
               onPressed: _canSave ? _save : null,
-              child: const Text('Save birth details'),
+              child: const Text('సేవ్ చేయండి • Save'),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _FieldLabel extends StatelessWidget {
+  const _FieldLabel({required this.theme, required this.telugu, required this.english});
+  final ThemeData theme;
+  final String telugu;
+  final String english;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Text(telugu, style: theme.textTheme.titleMedium),
+        const SizedBox(width: 6),
+        Text(english, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+      ],
     );
   }
 }

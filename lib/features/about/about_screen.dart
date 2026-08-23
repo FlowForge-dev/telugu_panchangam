@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -8,7 +9,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('About & privacy')),
+      appBar: AppBar(title: const BilingualTitle(telugu: 'గురించి & గోప్యత', english: 'About & privacy')),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [

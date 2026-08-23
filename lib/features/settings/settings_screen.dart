@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_state/theme_controller.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -13,7 +14,7 @@ class SettingsScreen extends StatelessWidget {
     final themeController = context.watch<ThemeController>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: const BilingualTitle(telugu: 'సెట్టింగ్‌లు', english: 'Settings')),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [

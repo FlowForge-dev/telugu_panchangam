@@ -24,7 +24,7 @@ class ReminderSelector extends StatelessWidget {
       children: ReminderLeadTime.values.map((lt) {
         final selected = enabledLeadTimes.contains(lt);
         return FilterChip(
-          label: Text(lt.label),
+          label: Text('${lt.teluguLabel} • ${lt.label}'),
           selected: selected,
           onSelected: enabled
               ? (value) {

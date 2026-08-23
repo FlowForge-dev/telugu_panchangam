@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../app_state/app_state.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/mock_data_badge.dart';
 import '../../core/widgets/source_reference_card.dart';
 import '../../domain/models/jatakam_models.dart';
@@ -24,7 +25,7 @@ class GrahaDetailsScreen extends StatelessWidget {
         : theme.colorScheme.primary;
 
     return Scaffold(
-      appBar: AppBar(title: Text(graha.transliteration)),
+      appBar: AppBar(title: BilingualTitle(telugu: graha.telugu, english: graha.transliteration)),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
@@ -50,8 +51,8 @@ class GrahaDetailsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(graha.transliteration, style: theme.textTheme.headlineSmall),
-                      Text('${graha.telugu} · ${graha.westernName}', style: theme.textTheme.bodyMedium),
+                      Text(graha.telugu, style: theme.textTheme.headlineSmall),
+                      Text('${graha.transliteration} · ${graha.westernName}', style: theme.textTheme.bodyMedium),
                     ],
                   ),
                 ),
@@ -62,7 +63,7 @@ class GrahaDetailsScreen extends StatelessWidget {
           if (position != null) ...[
             Row(
               children: [
-                Text('Placement in your chart', style: theme.textTheme.titleMedium),
+                Text('మీ చక్రంలో స్థానం', style: theme.textTheme.titleMedium),
                 const Spacer(),
                 if (jatakam!.isMockCalculated) const MockDataBadge(),
               ],
@@ -76,17 +77,17 @@ class GrahaDetailsScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _Row('Rāśi', '${position.rashi.name} (${position.rashi.telugu})'),
-                  _Row('House', 'Bhāva ${position.house}'),
-                  _Row('Degree', '${position.degree.toStringAsFixed(2)}°'),
-                  if (position.nakshatra != null) _Row('Nakshatra', '${position.nakshatra!.name} · Pada ${position.pada}'),
-                  _Row('Motion', position.isRetrograde ? 'Retrograde (Vakri)' : 'Direct (Mārgi)'),
+                  _Row('రాశి', '${position.rashi.telugu} (${position.rashi.name})'),
+                  _Row('భావం', 'Bhāva ${position.house}'),
+                  _Row('డిగ్రీ', '${position.degree.toStringAsFixed(2)}°'),
+                  if (position.nakshatra != null) _Row('నక్షత్రం', '${position.nakshatra!.name} · Pada ${position.pada}'),
+                  _Row('గమనం', position.isRetrograde ? 'వక్రి • Retrograde' : 'మార్గి • Direct'),
                 ],
               ),
             ),
             const SizedBox(height: AppSpacing.xxl),
           ],
-          Text('About ${graha.transliteration}', style: theme.textTheme.titleMedium),
+          Text('${graha.telugu} గురించి', style: theme.textTheme.titleMedium),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'Interpretive significance of this graha\'s placement requires a qualified Jyotisha reference and is '

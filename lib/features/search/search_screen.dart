@@ -52,7 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
           autofocus: true,
           onChanged: _onChanged,
           decoration: const InputDecoration(
-            hintText: 'Search festivals…',
+            hintText: 'పండుగల కోసం వెతకండి • Search',
             border: InputBorder.none,
             filled: false,
           ),

@@ -28,7 +28,7 @@ class PanchangSummaryCardWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  '${summary.masa.transliteration} · ${summary.paksha.transliteration}',
+                  '${summary.masa.telugu} · ${summary.paksha.telugu}',
                   style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.secondary),
                 ),
               ),
@@ -36,9 +36,9 @@ class PanchangSummaryCardWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.xs),
-          Text(summary.tithi.label, style: theme.textTheme.displaySmall),
+          Text(summary.tithi.telugu, style: theme.textTheme.displaySmall),
           Text(
-            summary.tithi.telugu,
+            summary.tithi.label,
             style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -49,15 +49,15 @@ class PanchangSummaryCardWidget extends StatelessWidget {
               Expanded(
                 child: _Fact(
                   icon: Icons.brightness_5_outlined,
-                  label: summary.vara.transliteration,
-                  sub: summary.vara.telugu,
+                  label: summary.vara.telugu,
+                  sub: summary.vara.transliteration,
                 ),
               ),
               Expanded(
                 child: _Fact(
                   icon: Icons.nights_stay_outlined,
-                  label: summary.nakshatra.name,
-                  sub: '${summary.nakshatra.telugu} · Pada ${summary.nakshatra.pada}',
+                  label: summary.nakshatra.telugu,
+                  sub: '${summary.nakshatra.name} · Pada ${summary.nakshatra.pada}',
                 ),
               ),
             ],
@@ -65,8 +65,8 @@ class PanchangSummaryCardWidget extends StatelessWidget {
           const SizedBox(height: AppSpacing.lg),
           Row(
             children: [
-              Expanded(child: _Fact(icon: Icons.wb_sunny_outlined, label: 'Sunrise', sub: summary.sunrise)),
-              Expanded(child: _Fact(icon: Icons.wb_twilight_outlined, label: 'Sunset', sub: summary.sunset)),
+              Expanded(child: _Fact(icon: Icons.wb_sunny_outlined, label: 'సూర్యోదయం', sub: summary.sunrise)),
+              Expanded(child: _Fact(icon: Icons.wb_twilight_outlined, label: 'సూర్యాస్తమయం', sub: summary.sunset)),
             ],
           ),
         ],

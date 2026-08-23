@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_state/app_state.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/empty_state.dart';
 import '../../core/widgets/graha_indicator.dart';
 import '../../core/widgets/jatakam_chart.dart';
@@ -19,7 +20,7 @@ class JatakamOverviewScreen extends StatelessWidget {
     final appState = context.watch<AppState>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Jatakam')),
+      appBar: AppBar(title: const BilingualTitle(telugu: 'జాతకం', english: 'Jatakam')),
       body: _buildBody(context, appState),
     );
   }
@@ -28,9 +29,9 @@ class JatakamOverviewScreen extends StatelessWidget {
     if (appState.profile?.hasBirthDetails != true) {
       return EmptyState(
         icon: Icons.auto_awesome_outlined,
-        title: 'No birth details yet',
+        title: 'జనన వివరాలు లేవు',
         message: 'Add your date, time and place of birth to generate your personalised Jatakam.',
-        actionLabel: 'Add birth details',
+        actionLabel: 'జోడించండి • Add details',
         onAction: () => context.push('/profile/birth-details'),
       );
     }
@@ -51,7 +52,7 @@ class JatakamOverviewScreen extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, 0),
           child: Row(
             children: [
-              Expanded(child: Text('Rāśi chart', style: theme.textTheme.headlineSmall)),
+              Expanded(child: Text('రాశి చక్రం', style: theme.textTheme.headlineSmall)),
               if (jatakam.isMockCalculated) const MockDataBadge(),
             ],
           ),
@@ -67,7 +68,7 @@ class JatakamOverviewScreen extends StatelessWidget {
             child: TextButton.icon(
               onPressed: () => context.push('/jatakam/chart'),
               icon: const Icon(Icons.table_rows_outlined, size: 16),
-              label: const Text('Full chart & houses'),
+              label: const Text('పూర్తి చక్రం • Full chart'),
             ),
           ),
         ),
@@ -78,8 +79,8 @@ class JatakamOverviewScreen extends StatelessWidget {
               Expanded(
                 child: _QuickLink(
                   icon: Icons.brightness_2_outlined,
-                  label: jatakam.moonRashi.name,
-                  sub: 'Rāśi',
+                  label: jatakam.moonRashi.telugu,
+                  sub: 'రాశి • Rāśi',
                   onTap: () => context.push('/jatakam/rashi/${jatakam.moonRashi.index}'),
                 ),
               ),
@@ -87,8 +88,8 @@ class JatakamOverviewScreen extends StatelessWidget {
               Expanded(
                 child: _QuickLink(
                   icon: Icons.star_border_rounded,
-                  label: jatakam.birthNakshatra.name,
-                  sub: 'Nakshatra',
+                  label: jatakam.birthNakshatra.telugu,
+                  sub: 'నక్షత్రం • Nakshatra',
                   onTap: () => context.push('/jatakam/nakshatra/${jatakam.birthNakshatra.index}'),
                 ),
               ),

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_state/app_state.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/graha_indicator.dart';
 import '../../core/widgets/jatakam_chart.dart';
 import '../../core/widgets/mock_data_badge.dart';
@@ -27,7 +28,7 @@ class JatakamChartScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Birth chart'),
+        title: const BilingualTitle(telugu: 'జాతక చక్రం', english: 'Birth chart'),
         actions: const [Padding(padding: EdgeInsets.only(right: AppSpacing.lg), child: Center(child: MockDataBadge()))],
       ),
       body: ListView(

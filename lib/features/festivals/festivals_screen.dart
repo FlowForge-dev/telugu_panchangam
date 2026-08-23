@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../app_state/app_state.dart';
 import '../../app_state/repositories_scope.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/festival_card.dart';
 import '../../core/widgets/loading_skeleton.dart';
 import '../../domain/models/festival_models.dart';
@@ -38,7 +39,7 @@ class _FestivalsScreenState extends State<FestivalsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Festivals'),
+        title: const BilingualTitle(telugu: 'పండుగలు', english: 'Festivals'),
         actions: [
           IconButton(icon: const Icon(Icons.search_rounded), onPressed: () => context.push('/search')),
         ],
@@ -50,7 +51,7 @@ class _FestivalsScreenState extends State<FestivalsScreen> {
             child: Row(
               children: [
                 ChoiceChip(
-                  label: const Text('Upcoming'),
+                  label: const Text('రాబోయేవి'),
                   selected: _upcomingOnly,
                   onSelected: (_) => setState(() {
                     _upcomingOnly = true;
@@ -59,7 +60,7 @@ class _FestivalsScreenState extends State<FestivalsScreen> {
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 ChoiceChip(
-                  label: const Text('Full year'),
+                  label: const Text('పూర్తి సంవత్సరం'),
                   selected: !_upcomingOnly,
                   onSelected: (_) => setState(() {
                     _upcomingOnly = false;

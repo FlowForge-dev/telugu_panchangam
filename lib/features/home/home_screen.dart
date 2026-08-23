@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _greeting(String? name) {
     final hour = DateTime.now().hour;
-    final base = hour < 12 ? 'Good morning' : (hour < 17 ? 'Good afternoon' : 'Good evening');
+    final base = hour < 12 ? 'శుభోదయం' : (hour < 17 ? 'శుభ మధ్యాహ్నం' : 'శుభ సాయంత్రం');
     if (name == null || name.trim().isEmpty) return base;
     return '$base, ${name.split(' ').first}';
   }
@@ -175,8 +175,8 @@ class _NextEventCard extends StatelessWidget {
                       style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer),
                     ),
                     const SizedBox(height: 4),
-                    Text(festival.name, style: theme.textTheme.headlineSmall?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
-                    Text(festival.teluguName, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
+                    Text(festival.teluguName, style: theme.textTheme.headlineSmall?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
+                    Text(festival.name, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onPrimaryContainer)),
                     const SizedBox(height: AppSpacing.sm),
                     Text(
                       festival.shortSignificance,
@@ -207,9 +207,9 @@ class _PersonalSection extends StatelessWidget {
     if (appState.jatakam == null) {
       return EmptyState(
         icon: Icons.auto_awesome_outlined,
-        title: 'Add your birth details',
+        title: 'జనన వివరాలు జోడించండి',
         message: 'Enter your date, time and place of birth to see your personalised Rāśi, Nakshatra and full Jatakam.',
-        actionLabel: 'Add birth details',
+        actionLabel: 'జోడించండి • Add details',
         onAction: () => context.push('/profile/birth-details'),
       );
     }

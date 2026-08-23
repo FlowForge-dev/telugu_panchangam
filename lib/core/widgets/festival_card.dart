@@ -49,10 +49,10 @@ class FestivalCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(festival.name, style: theme.textTheme.titleLarge),
+                        Text(festival.teluguName, style: theme.textTheme.titleLarge),
                         const SizedBox(height: 2),
                         Text(
-                          festival.teluguName,
+                          festival.name,
                           style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                         ),
                       ],

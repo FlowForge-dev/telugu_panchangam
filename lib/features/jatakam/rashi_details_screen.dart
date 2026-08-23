@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/source_reference_card.dart';
 import '../../domain/models/jatakam_models.dart';
 import '../../domain/models/source_reference.dart';
@@ -18,7 +19,7 @@ class RashiDetailsScreen extends StatelessWidget {
     final accent = AppColors.rashiAccents[(rashi.index - 1) % AppColors.rashiAccents.length];
 
     return Scaffold(
-      appBar: AppBar(title: Text(rashi.name)),
+      appBar: AppBar(title: BilingualTitle(telugu: rashi.telugu, english: rashi.name)),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
@@ -37,8 +38,8 @@ class RashiDetailsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(rashi.name, style: theme.textTheme.headlineSmall),
-                      Text(rashi.telugu, style: theme.textTheme.bodyMedium),
+                      Text(rashi.telugu, style: theme.textTheme.headlineSmall),
+                      Text(rashi.name, style: theme.textTheme.bodyMedium),
                     ],
                   ),
                 ),
@@ -51,11 +52,11 @@ class RashiDetailsScreen extends StatelessWidget {
             decoration: BoxDecoration(color: theme.colorScheme.surfaceContainer, borderRadius: BorderRadius.circular(AppRadii.md)),
             child: Row(
               children: [
-                Expanded(child: Text('Ruling graha', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant))),
+                Expanded(child: Text('అధిపతి గ్రహం', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant))),
                 InkWell(
                   onTap: () => context.push('/jatakam/graha/${rashi.lord.name}'),
                   child: Text(
-                    '${rashi.lord.transliteration} (${rashi.lord.telugu})',
+                    '${rashi.lord.telugu} (${rashi.lord.transliteration})',
                     style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600, color: theme.colorScheme.primary),
                   ),
                 ),
@@ -63,7 +64,7 @@ class RashiDetailsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.xxl),
-          Text('Characteristics', style: theme.textTheme.titleMedium),
+          Text('లక్షణాలు', style: theme.textTheme.titleMedium),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'Detailed characteristics and interpretive traits for ${rashi.name} require a qualified Jyotisha '

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_state/app_state.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/reminder_selector.dart';
 
 class NotificationPreferencesScreen extends StatelessWidget {
@@ -15,7 +16,7 @@ class NotificationPreferencesScreen extends StatelessWidget {
     final prefs = appState.reminderPreferences;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Notification preferences')),
+      appBar: AppBar(title: const BilingualTitle(telugu: 'నోటిఫికేషన్ ప్రాధాన్యతలు', english: 'Notification preferences')),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [

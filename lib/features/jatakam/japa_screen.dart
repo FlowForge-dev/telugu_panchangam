@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../app_state/app_state.dart';
 import '../../app_state/repositories_scope.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/bilingual_title.dart';
 import '../../core/widgets/loading_skeleton.dart';
 import '../../core/widgets/source_reference_card.dart';
 import '../../domain/models/jatakam_models.dart';
@@ -29,7 +30,7 @@ class _JapaScreenState extends State<JapaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Japa & observance')),
+      appBar: AppBar(title: const BilingualTitle(telugu: 'జప నియమాలు', english: 'Japa & observance')),
       body: FutureBuilder<List<JapaRecommendation>>(
         future: _future,
         builder: (context, snapshot) {
@@ -69,13 +70,13 @@ class _JapaCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(recommendation.title, style: theme.textTheme.titleLarge),
-          Text(recommendation.teluguTitle, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          Text(recommendation.teluguTitle, style: theme.textTheme.titleLarge),
+          Text(recommendation.title, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
           const SizedBox(height: AppSpacing.md),
-          _field(context, Icons.event_available_outlined, 'Applies to', recommendation.applicability),
-          _field(context, Icons.help_outline_rounded, 'Reason', recommendation.reason),
-          _field(context, Icons.spa_outlined, 'Preparation', recommendation.preparation),
-          _field(context, Icons.repeat_rounded, 'Repetition', recommendation.repetitionInfo),
+          _field(context, Icons.event_available_outlined, 'వర్తించేది', recommendation.applicability),
+          _field(context, Icons.help_outline_rounded, 'కారణం', recommendation.reason),
+          _field(context, Icons.spa_outlined, 'సన్నాహం', recommendation.preparation),
+          _field(context, Icons.repeat_rounded, 'పునరావృతం', recommendation.repetitionInfo),
           const SizedBox(height: AppSpacing.sm),
           Container(
             width: double.infinity,
@@ -91,7 +92,7 @@ class _JapaCard extends StatelessWidget {
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Text(
-                    'Mantra: ${recommendation.mantraPlaceholder}',
+                    'మంత్రం • Mantra: ${recommendation.mantraPlaceholder}',
                     style: theme.textTheme.bodySmall?.copyWith(fontStyle: FontStyle.italic, color: theme.colorScheme.onSurfaceVariant),
                   ),
                 ),
