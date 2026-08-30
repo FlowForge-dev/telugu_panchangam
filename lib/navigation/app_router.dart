@@ -5,9 +5,12 @@ import '../domain/models/jatakam_models.dart';
 import '../features/about/about_screen.dart';
 import '../features/calendar/calendar_screen.dart';
 import '../features/calendar/day_detail_screen.dart';
+import '../features/devotional/devotional_detail_screen.dart';
+import '../features/devotional/devotional_lyrics_screen.dart';
 import '../features/festivals/festival_detail_screen.dart';
 import '../features/festivals/festivals_screen.dart';
 import '../features/home/home_screen.dart';
+import '../features/jatakam/dasha_timeline_screen.dart';
 import '../features/jatakam/graha_details_screen.dart';
 import '../features/jatakam/japa_screen.dart';
 import '../features/jatakam/jatakam_chart_screen.dart';
@@ -22,6 +25,7 @@ import '../features/search/search_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/sources/sources_screen.dart';
 import '../features/splash/splash_screen.dart';
+import '../features/vrata/vrata_collections_screen.dart';
 import 'app_shell.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -128,6 +132,26 @@ final GoRouter appRouter = GoRouter(
       path: '/about',
       parentNavigatorKey: rootNavigatorKey,
       builder: (context, state) => const AboutScreen(),
+    ),
+    GoRoute(
+      path: '/vrata',
+      parentNavigatorKey: rootNavigatorKey,
+      builder: (context, state) => const VrataCollectionsScreen(),
+    ),
+    GoRoute(
+      path: '/devotional',
+      parentNavigatorKey: rootNavigatorKey,
+      builder: (context, state) => const DevotionalLyricsScreen(),
+    ),
+    GoRoute(
+      path: '/devotional/:id',
+      parentNavigatorKey: rootNavigatorKey,
+      builder: (context, state) => DevotionalDetailScreen(id: state.pathParameters['id']!),
+    ),
+    GoRoute(
+      path: '/jatakam/dasha',
+      parentNavigatorKey: rootNavigatorKey,
+      builder: (context, state) => const DashaTimelineScreen(),
     ),
   ],
 );

@@ -22,6 +22,8 @@ class MockPanchangRepository implements PanchangRepository {
       nakshatra: day.nakshatra,
       sunrise: day.sunrise,
       sunset: day.sunset,
+      yoga: day.yoga,
+      karana: day.karana,
       isMockCalculated: day.isMockCalculated,
     );
   }

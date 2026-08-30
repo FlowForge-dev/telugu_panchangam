@@ -3,15 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_state/repositories_scope.dart';
-import '../../core/theme/app_spacing.dart';
 import '../../core/util/date_format.dart';
-import '../../core/widgets/bilingual_title.dart';
-import '../../core/widgets/calendar_day_cell.dart';
 import '../../data/mock/mock_seed_data.dart';
 import '../../domain/models/panchang_models.dart';
 
-const _weekdayHeaders = ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'];
+const _weekdayHeaders = ['ఆది', 'సోమ', 'మం', 'బుధ', 'గురు', 'శుక్ర', 'శని'];
 
+/// A clean, Google-Calendar-style month grid on a white background,
+/// showing Telugu Panchangam context (tithi + festival) per day.
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
 
@@ -36,7 +35,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     _month = currentMonth.isBefore(_rangeStart)
         ? _rangeStart
         : (currentMonth.isAfter(_rangeEnd) ? _rangeEnd : currentMonth);
-    _selected = isSameDay(now, DateTime.now()) && !currentMonth.isBefore(_rangeStart) && !currentMonth.isAfter(_rangeEnd) ? now : null;
+    _selected = !currentMonth.isBefore(_rangeStart) && !currentMonth.isAfter(_rangeEnd) ? now : null;
     _load();
   }
 
@@ -66,150 +65,225 @@ class _CalendarScreenState extends State<CalendarScreen> {
     _load();
   }
 
+  void _goToday() {
+    final now = DateTime.now();
+    final currentMonth = DateTime(now.year, now.month, 1);
+    if (currentMonth.isBefore(_rangeStart) || currentMonth.isAfter(_rangeEnd)) return;
+    setState(() {
+      _month = currentMonth;
+      _selected = now;
+    });
+    _load();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    const ink = Color(0xFF3C4043);
+    const gridLine = Color(0xFFE0E0E0);
+    const accent = Color(0xFF7C2B2B);
+
     final gridStart = _gridStart(_month);
     final canGoPrev = !DateTime(_month.year, _month.month - 1, 1).isBefore(_rangeStart);
     final canGoNext = !DateTime(_month.year, _month.month + 1, 1).isAfter(_rangeEnd);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const BilingualTitle(telugu: 'పంచాంగం', english: 'Calendar'),
-        actions: [
-          IconButton(
-            tooltip: 'Search',
-            icon: const Icon(Icons.search_rounded),
-            onPressed: () => context.push('/search'),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(AppRadii.pill),
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        elevation: 0,
+        titleSpacing: 4,
+        title: Row(
+          children: [
+            OutlinedButton(
+              onPressed: _goToday,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: ink,
+                side: const BorderSide(color: gridLine),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
               ),
-              child: Row(
+              child: const Text('ఈరోజు'),
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              onPressed: canGoPrev ? () => _changeMonth(-1) : null,
+              icon: const Icon(Icons.chevron_left_rounded),
+              color: ink,
+            ),
+            IconButton(
+              onPressed: canGoNext ? () => _changeMonth(1) : null,
+              icon: const Icon(Icons.chevron_right_rounded),
+              color: ink,
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.brightness_low_rounded, size: 14, color: theme.colorScheme.onSurfaceVariant),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      'ఉగాది సంవత్సరం: ${formatDateShort(kMockUgadiStart)} → ${formatDateShort(kMockNextUgadiStart)}',
-                      style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  Text(
+                    formatMonthYear(_month),
+                    style: const TextStyle(color: ink, fontSize: 20, fontWeight: FontWeight.w500),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    _days[_month]?.masa.telugu ?? '',
+                    style: const TextStyle(color: Color(0xFF70757A), fontSize: 12),
                   ),
                 ],
               ),
             ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            tooltip: 'Search',
+            icon: const Icon(Icons.search_rounded, color: ink),
+            onPressed: () => context.push('/search'),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: canGoPrev ? () => _changeMonth(-1) : null,
-                  icon: const Icon(Icons.chevron_left_rounded),
-                ),
-                Column(
-                  children: [
-                    Text(
-                      _days[_month]?.masa.telugu ?? formatMonthYear(_month),
-                      style: theme.textTheme.headlineSmall,
-                    ),
-                    Text(
-                      formatMonthYear(_month),
-                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                    ),
-                  ],
-                ),
-                IconButton(
-                  onPressed: canGoNext ? () => _changeMonth(1) : null,
-                  icon: const Icon(Icons.chevron_right_rounded),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          const SizedBox(width: 4),
+        ],
+      ),
+      body: Column(
+        children: [
+          Container(
+            decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: gridLine))),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: [
                 for (final w in _weekdayHeaders)
                   Expanded(
                     child: Center(
-                      child: Text(w, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                      child: Text(
+                        w,
+                        style: const TextStyle(color: Color(0xFF70757A), fontSize: 11, fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
               ],
             ),
           ),
-          const SizedBox(height: AppSpacing.xs),
           Expanded(
             child: _loading
                 ? const Center(child: CircularProgressIndicator())
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                    child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 7, childAspectRatio: 0.82),
-                      itemCount: 42,
-                      itemBuilder: (context, i) {
-                        final date = gridStart.add(Duration(days: i));
-                        final day = _days[DateTime(date.year, date.month, date.day)];
-                        final inCurrentMonth = date.month == _month.month;
-                        final isToday = isSameDay(date, DateTime.now());
-                        final isSelected = _selected != null && isSameDay(date, _selected!);
-                        return CalendarDayCell(
-                          date: date,
-                          panchangDay: day,
-                          isSelected: isSelected,
-                          isToday: isToday,
-                          inCurrentMonth: inCurrentMonth,
-                          onTap: () {
-                            setState(() => _selected = date);
-                            context.push('/calendar/day/${date.toIso8601String().split('T').first}');
-                          },
-                        );
-                      },
-                    ),
+                : Column(
+                    children: List.generate(6, (row) {
+                      return Expanded(
+                        child: Row(
+                          children: List.generate(7, (col) {
+                            final i = row * 7 + col;
+                            final date = gridStart.add(Duration(days: i));
+                            final day = _days[DateTime(date.year, date.month, date.day)];
+                            final inCurrentMonth = date.month == _month.month;
+                            final isToday = isSameDay(date, DateTime.now());
+                            final isSelected = _selected != null && isSameDay(date, _selected!);
+                            return Expanded(
+                              child: _GoogleStyleDayCell(
+                                date: date,
+                                panchangDay: day,
+                                inCurrentMonth: inCurrentMonth,
+                                isToday: isToday,
+                                isSelected: isSelected,
+                                accent: accent,
+                                gridLine: gridLine,
+                                ink: ink,
+                                onTap: () {
+                                  setState(() => _selected = date);
+                                  context.push('/calendar/day/${date.toIso8601String().split('T').first}');
+                                },
+                              ),
+                            );
+                          }),
+                        ),
+                      );
+                    }),
                   ),
           ),
-          _CalendarLegend(theme: theme),
-          const SizedBox(height: AppSpacing.sm),
         ],
       ),
     );
   }
 }
 
-class _CalendarLegend extends StatelessWidget {
-  const _CalendarLegend({required this.theme});
-  final ThemeData theme;
+class _GoogleStyleDayCell extends StatelessWidget {
+  const _GoogleStyleDayCell({
+    required this.date,
+    required this.panchangDay,
+    required this.inCurrentMonth,
+    required this.isToday,
+    required this.isSelected,
+    required this.accent,
+    required this.gridLine,
+    required this.ink,
+    required this.onTap,
+  });
+
+  final DateTime date;
+  final PanchangDay? panchangDay;
+  final bool inCurrentMonth;
+  final bool isToday;
+  final bool isSelected;
+  final Color accent;
+  final Color gridLine;
+  final Color ink;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    Widget dot(Color c) => Container(width: 6, height: 6, margin: const EdgeInsets.only(right: 5), decoration: BoxDecoration(color: c, shape: BoxShape.circle));
-    Widget item(Color c, String label) => Padding(
-          padding: const EdgeInsets.only(right: AppSpacing.md),
-          child: Row(mainAxisSize: MainAxisSize.min, children: [dot(c), Text(label, style: theme.textTheme.labelSmall)]),
-        );
+    final numberColor = !inCurrentMonth ? const Color(0xFFBDBDBD) : (isToday ? Colors.white : ink);
+    final hasFestival = panchangDay?.festivalId != null;
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      child: Row(
-        children: [
-          item(theme.colorScheme.primary, 'పండుగ'),
-          item(theme.colorScheme.secondary, 'ఏకాదశి / పౌర్ణమి'),
-          item(theme.colorScheme.tertiary, 'వ్రతం'),
-          item(theme.colorScheme.onSurfaceVariant, 'అమావాస్య'),
-        ],
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: gridLine, width: 0.5),
+          color: isSelected ? const Color(0xFFFBF1EF) : Colors.white,
+        ),
+        padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 24,
+              height: 24,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: isToday ? accent : Colors.transparent,
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                '${date.day}',
+                style: TextStyle(color: numberColor, fontSize: 13, fontWeight: isToday ? FontWeight.w700 : FontWeight.w400),
+              ),
+            ),
+            if (panchangDay != null && inCurrentMonth) ...[
+              const SizedBox(height: 2),
+              Text(
+                'తి.${panchangDay!.tithi.index}',
+                style: const TextStyle(color: Color(0xFF70757A), fontSize: 9.5),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+            if (hasFestival && inCurrentMonth) ...[
+              const SizedBox(height: 2),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1),
+                decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(3)),
+                child: const Text(
+                  'పండుగ',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Colors.white, fontSize: 9),
+                ),
+              ),
+            ] else if (panchangDay?.isSpecial == true && inCurrentMonth) ...[
+              const SizedBox(height: 2),
+              Container(width: 5, height: 5, decoration: const BoxDecoration(color: Color(0xFFC17A2C), shape: BoxShape.circle)),
+            ],
+          ],
+        ),
       ),
     );
   }

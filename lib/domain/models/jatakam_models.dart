@@ -120,6 +120,40 @@ class GrahaPosition {
   final int? pada;
 }
 
+/// One Vimshottari Mahadasha period ruled by a single graha. The 120-year
+/// total cycle and each graha's fixed number of years are the standard,
+/// well-documented Vimshottari system definition — not an interpretive
+/// claim. The actual start date (which depends on the Moon's precise
+/// position at birth) is mock-derived here; see [Jatakam.isMockCalculated].
+class DashaPeriod {
+  const DashaPeriod({
+    required this.graha,
+    required this.years,
+    required this.startDate,
+    required this.endDate,
+    required this.isCurrent,
+  });
+
+  final Graha graha;
+  final int years;
+  final DateTime startDate;
+  final DateTime endDate;
+  final bool isCurrent;
+}
+
+/// Fixed Vimshottari Mahadasha durations (years), standard system order.
+const Map<Graha, int> kVimshottariYears = {
+  Graha.ketu: 7,
+  Graha.shukra: 20,
+  Graha.surya: 6,
+  Graha.chandra: 10,
+  Graha.kuja: 7,
+  Graha.rahu: 18,
+  Graha.guru: 16,
+  Graha.shani: 19,
+  Graha.budha: 17,
+};
+
 /// A full birth chart. Field shapes mirror what a deterministic
 /// Jyotisha engine would return so the mock data can be swapped later
 /// without touching chart/summary widgets.
@@ -130,6 +164,7 @@ class Jatakam {
     required this.birthNakshatraPada,
     required this.lagna,
     required this.grahaPositions,
+    this.dashaPeriods = const [],
     this.isMockCalculated = true,
   });
 
@@ -140,6 +175,9 @@ class Jatakam {
   /// Ascendant sign at birth.
   final Rashi lagna;
   final List<GrahaPosition> grahaPositions;
+
+  /// The Vimshottari Mahadasha sequence, oldest first.
+  final List<DashaPeriod> dashaPeriods;
 
   /// True while these values are produced by the mock generator rather
   /// than a real ephemeris-based Jyotisha calculation.

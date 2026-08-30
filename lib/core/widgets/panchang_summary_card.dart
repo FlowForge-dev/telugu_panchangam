@@ -65,6 +65,17 @@ class PanchangSummaryCardWidget extends StatelessWidget {
           const SizedBox(height: AppSpacing.lg),
           Row(
             children: [
+              Expanded(
+                child: _Fact(icon: Icons.blur_circular_outlined, label: summary.yoga.telugu, sub: summary.yoga.name),
+              ),
+              Expanded(
+                child: _Fact(icon: Icons.change_history_outlined, label: summary.karana.telugu, sub: summary.karana.name),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          Row(
+            children: [
               Expanded(child: _Fact(icon: Icons.wb_sunny_outlined, label: 'సూర్యోదయం', sub: summary.sunrise)),
               Expanded(child: _Fact(icon: Icons.wb_twilight_outlined, label: 'సూర్యాస్తమయం', sub: summary.sunset)),
             ],

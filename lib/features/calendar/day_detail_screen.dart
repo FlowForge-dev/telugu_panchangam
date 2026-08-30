@@ -72,7 +72,10 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
                         ],
                       ),
                       const SizedBox(height: AppSpacing.sm),
-                      Text('${day.masa.telugu} · ${day.paksha.telugu}', style: theme.textTheme.bodyMedium),
+                      Text(
+                        '${day.masa.telugu} · ${day.paksha.telugu} · ${day.shakaSamvatYear} శక సంవత్సరం',
+                        style: theme.textTheme.bodyMedium,
+                      ),
                       const SizedBox(height: AppSpacing.lg),
                       Row(
                         children: [
@@ -81,11 +84,20 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
                         ],
                       ),
                       const SizedBox(height: AppSpacing.lg),
-                      _InfoTile(
-                        label: 'నక్షత్రం',
-                        value: day.nakshatra.telugu,
-                        sub: '${day.nakshatra.name} · Pada ${day.nakshatra.pada}',
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _InfoTile(
+                              label: 'నక్షత్రం',
+                              value: day.nakshatra.telugu,
+                              sub: '${day.nakshatra.name} · Pada ${day.nakshatra.pada}',
+                            ),
+                          ),
+                          Expanded(child: _InfoTile(label: 'యోగం', value: day.yoga.telugu, sub: day.yoga.name)),
+                        ],
                       ),
+                      const SizedBox(height: AppSpacing.lg),
+                      _InfoTile(label: 'కరణం', value: day.karana.telugu, sub: day.karana.name),
                     ],
                   ),
                 ),
@@ -143,6 +155,43 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
                   ],
                 ),
               ),
+              if (day.choghadiya.isNotEmpty) ...[
+                SectionHeader(title: 'Choghadiya', teluguTitle: 'చౌఘడియ'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  child: Column(
+                    children: day.choghadiya
+                        .map((c) => Padding(
+                              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                              child: Container(
+                                padding: const EdgeInsets.all(AppSpacing.md),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.surfaceContainer,
+                                  borderRadius: BorderRadius.circular(AppRadii.md),
+                                  border: Border(
+                                    left: BorderSide(width: 4, color: _choghadiyaColor(theme, c.quality)),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(c.telugu, style: theme.textTheme.titleSmall),
+                                          Text(c.name, style: theme.textTheme.bodySmall),
+                                        ],
+                                      ),
+                                    ),
+                                    Text('${c.start} – ${c.end}', style: theme.textTheme.bodyMedium),
+                                  ],
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+              ],
               if (day.muhurtas.isNotEmpty) ...[
                 SectionHeader(title: 'Inauspicious windows', teluguTitle: 'రాహు కాలం, యమగండం'),
                 Padding(
@@ -182,6 +231,17 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
         },
       ),
     );
+  }
+}
+
+Color _choghadiyaColor(ThemeData theme, ChoghadiyaQuality quality) {
+  switch (quality) {
+    case ChoghadiyaQuality.good:
+      return theme.colorScheme.tertiary;
+    case ChoghadiyaQuality.neutral:
+      return theme.colorScheme.secondary;
+    case ChoghadiyaQuality.inauspicious:
+      return theme.colorScheme.onSurfaceVariant;
   }
 }
 

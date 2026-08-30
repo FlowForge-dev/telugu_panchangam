@@ -19,9 +19,10 @@ class AboutScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.xxl),
           _Card(
             title: 'About this build',
-            body: 'This is a frontend-only development preview. Panchangam calculations, festival dates and '
-                'Jatakam charts are produced by a placeholder mock data layer so the interface can be built and '
-                'reviewed ahead of a verified calculation engine. Values marked "Preview calculation" or '
+            body: 'This is a frontend-only development preview. Festival dates from 19 Mar 2026 through '
+                '24 Dec 2026 are taken from a real published almanac (see Sources & references); daily '
+                'Tithi/Nakshatra/Yoga/Karana values and Jatakam charts still come from a placeholder mock data '
+                'layer pending a verified calculation engine. Values marked "Preview calculation" or '
                 '"[VERIFIED CONTENT REQUIRED]" are not to be relied on for religious observance.',
           ),
           const SizedBox(height: AppSpacing.lg),

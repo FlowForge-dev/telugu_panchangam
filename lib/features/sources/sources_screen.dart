@@ -61,9 +61,9 @@ class _SourcesScreenState extends State<SourcesScreen> {
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   'Every mantra, festival rule and Jyotisha statement in this app is meant to carry a source — '
-                  'title, section, edition, language and a verification status. This build ships with the '
-                  'provenance framework wired up, but no specific citations have been reviewed and approved yet, '
-                  'so every entry below is marked pending verification.',
+                  'title, section, edition, language and a verification status. Festival dates now cite the '
+                  '2026 Drik Panchang Hindu Calendar the user supplied; deeper significance, observance rules '
+                  'and mantra text are not covered by that document and remain marked pending verification below.',
                   style: theme.textTheme.bodyMedium,
                 ),
               ],

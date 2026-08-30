@@ -8,6 +8,8 @@ import '../models/panchang_models.dart';
 import '../models/festival_models.dart';
 import '../models/profile_models.dart';
 import '../models/jatakam_models.dart';
+import '../models/vrata_models.dart';
+import '../models/devotional_models.dart';
 
 abstract class PanchangRepository {
   /// The Panchangam year is anchored Ugadi -> next Ugadi rather than a
@@ -66,4 +68,14 @@ abstract class ReminderRepository {
   Future<ReminderPreferences> loadPreferences();
 
   Future<void> savePreferences(ReminderPreferences preferences);
+}
+
+abstract class VrataRepository {
+  Future<List<VrataObservance>> all();
+}
+
+abstract class DevotionalRepository {
+  Future<List<DevotionalText>> all();
+
+  Future<DevotionalText?> byId(String id);
 }

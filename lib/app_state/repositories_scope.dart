@@ -1,9 +1,11 @@
+import '../data/mock/mock_devotional_repository.dart';
 import '../data/mock/mock_festival_repository.dart';
 import '../data/mock/mock_jatakam_repository.dart';
 import '../data/mock/mock_japa_repository.dart';
 import '../data/mock/mock_panchang_repository.dart';
 import '../data/mock/mock_profile_repository.dart';
 import '../data/mock/mock_reminder_repository.dart';
+import '../data/mock/mock_vrata_repository.dart';
 import '../domain/repositories/repositories.dart';
 
 /// Composition root for repositories. Screens depend on the interfaces
@@ -18,6 +20,8 @@ class Repositories {
     required this.jatakam,
     required this.japa,
     required this.reminder,
+    required this.vrata,
+    required this.devotional,
   });
 
   factory Repositories.mock() => Repositories(
@@ -27,6 +31,8 @@ class Repositories {
         jatakam: MockJatakamRepository(),
         japa: MockJapaRepository(),
         reminder: MockReminderRepository(),
+        vrata: MockVrataRepository(),
+        devotional: MockDevotionalRepository(),
       );
 
   final PanchangRepository panchang;
@@ -35,4 +41,6 @@ class Repositories {
   final JatakamRepository jatakam;
   final JapaRepository japa;
   final ReminderRepository reminder;
+  final VrataRepository vrata;
+  final DevotionalRepository devotional;
 }
