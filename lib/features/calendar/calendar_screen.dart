@@ -78,9 +78,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const ink = Color(0xFF3C4043);
+    const ink = Color(0xFF000000);
     const gridLine = Color(0xFFE0E0E0);
-    const accent = Color(0xFF7C2B2B);
+    const accent = Color(0xFF000000);
 
     final gridStart = _gridStart(_month);
     final canGoPrev = !DateTime(_month.year, _month.month - 1, 1).isBefore(_rangeStart);
@@ -238,7 +238,7 @@ class _GoogleStyleDayCell extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: gridLine, width: 0.5),
-          color: isSelected ? const Color(0xFFFBF1EF) : Colors.white,
+          color: isSelected ? const Color(0xFFF0F0F0) : Colors.white,
         ),
         padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
         child: Column(
@@ -280,7 +280,7 @@ class _GoogleStyleDayCell extends StatelessWidget {
               ),
             ] else if (panchangDay?.isSpecial == true && inCurrentMonth) ...[
               const SizedBox(height: 2),
-              Container(width: 5, height: 5, decoration: const BoxDecoration(color: Color(0xFFC17A2C), shape: BoxShape.circle)),
+              Container(width: 5, height: 5, decoration: const BoxDecoration(color: Color(0xFF757575), shape: BoxShape.circle)),
             ],
           ],
         ),

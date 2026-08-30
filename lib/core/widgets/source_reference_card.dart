@@ -81,7 +81,7 @@ class SourceReferenceCard extends StatelessWidget {
   _StatusMeta _statusMeta(ThemeData theme, VerificationStatus status) {
     switch (status) {
       case VerificationStatus.verified:
-        return _StatusMeta('Verified', Icons.verified_rounded, const Color(0xFF4B7A4E));
+        return _StatusMeta('Verified', Icons.verified_rounded, const Color(0xFF212121));
       case VerificationStatus.pendingVerification:
         return _StatusMeta('Pending verification', Icons.hourglass_top_rounded, theme.colorScheme.secondary);
       case VerificationStatus.variesByTradition:
