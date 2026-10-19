@@ -1,22 +1,17 @@
 package com.panchangam.telugupanchangam.ui.day
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,23 +22,23 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.panchangam.telugupanchangam.domain.ChoghadiyaQuality
-import com.panchangam.telugupanchangam.domain.Festival
 import com.panchangam.telugupanchangam.domain.FestivalRepository
 import com.panchangam.telugupanchangam.domain.PanchangRepository
-import com.panchangam.telugupanchangam.ui.components.DetailRow
-import com.panchangam.telugupanchangam.ui.components.OutlinedBlock
-import com.panchangam.telugupanchangam.ui.components.PreviewDataNote
-import com.panchangam.telugupanchangam.ui.components.SectionHeader
-import com.panchangam.telugupanchangam.ui.components.ThinDivider
+import com.panchangam.telugupanchangam.ui.LocalAppSettings
 import com.panchangam.telugupanchangam.ui.components.formatLong
+import com.panchangam.telugupanchangam.ui.components.teluguDayMonth
 import com.panchangam.telugupanchangam.ui.theme.Ink
+import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 
+private const val DAY_PAGES = 365 * 30
+private const val DAY_CENTRE = DAY_PAGES / 2
+
+/** One day's full Panchangam; swipe sideways for the previous or next day. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DayDetailScreen(
@@ -51,130 +46,64 @@ fun DayDetailScreen(
     panchangRepository: PanchangRepository,
     festivalRepository: FestivalRepository,
     onBack: () -> Unit,
-    onFestivalSelected: (String) -> Unit
+    onFestivalSelected: (String) -> Unit,
+    onShare: (String) -> Unit
 ) {
-    val day = remember(date) { panchangRepository.dayDetail(date) }
-    val festivals = remember(date) { festivalRepository.onDate(date) }
+    val settings = LocalAppSettings.current
+    val city = settings.city
+    val pager = rememberPagerState(initialPage = DAY_CENTRE) { DAY_PAGES }
+    val scope = rememberCoroutineScope()
+    val shown = date.plusDays((pager.currentPage - DAY_CENTRE).toLong())
+    val ink = Ink.current
 
     Scaffold(
-        containerColor = Ink.White,
+        containerColor = ink.page,
         topBar = {
             TopAppBar(
-                title = { Text(date.formatLong(), style = MaterialTheme.typography.titleLarge) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Ink.Black)
+                title = {
+                    Column {
+                        Text(shown.teluguDayMonth() + " ${shown.year}", style = MaterialTheme.typography.titleLarge, color = ink.strong)
+                        Text(shown.formatLong(), style = MaterialTheme.typography.bodySmall, color = ink.secondary)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Ink.White)
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = ink.strong)
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { scope.launch { pager.animateScrollToPage(pager.currentPage - 1) } }) {
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Previous day", tint = ink.strong)
+                    }
+                    IconButton(onClick = { scope.launch { pager.animateScrollToPage(pager.currentPage + 1) } }) {
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Next day", tint = ink.strong)
+                    }
+                    IconButton(onClick = {
+                        val day = panchangRepository.dayDetail(shown, city)
+                        onShare(shareText(day, festivalRepository.onDate(shown), settings.use24Hour))
+                    }) {
+                        Icon(Icons.Filled.Share, contentDescription = "Share", tint = ink.strong)
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = ink.page)
             )
         }
     ) { padding ->
-        LazyColumn(
+        HorizontalPager(
+            state = pager,
             modifier = Modifier.fillMaxSize().padding(padding),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 32.dp)
-        ) {
-            item {
-                Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                    OutlinedBlock {
-                        Text(
-                            "${day.masa.telugu} · ${day.paksha.telugu}",
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                        Text(
-                            "${day.shakaSamvatYear} శక సంవత్సరం",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Spacer(Modifier.height(12.dp))
-                        ThinDivider()
-                        DetailRow("వారం", day.vara.telugu, day.vara.transliteration)
-                        DetailRow("తిథి", day.tithi.telugu, day.tithi.label)
-                        DetailRow(
-                            "నక్షత్రం",
-                            day.nakshatra.telugu,
-                            "${day.nakshatra.name} · Pada ${day.nakshatraPada}"
-                        )
-                        DetailRow("యోగం", day.yoga.telugu, day.yoga.name)
-                        DetailRow("కరణం", day.karana.telugu, day.karana.name)
-                    }
-                    Spacer(Modifier.height(12.dp))
-                    PreviewDataNote()
-                }
-            }
-
-            if (festivals.isNotEmpty()) {
-                item { SectionHeader("నేటి పండుగ", "Festival today") }
-                items(festivals) { festival ->
-                    FestivalRow(festival) { onFestivalSelected(festival.id) }
-                }
-            }
-
-            item { SectionHeader("సూర్య చంద్రుడు", "Sun & Moon") }
-            item {
-                Column(Modifier.padding(horizontal = 16.dp)) {
-                    OutlinedBlock {
-                        DetailRow("సూర్యోదయం", day.sunrise)
-                        DetailRow("సూర్యాస్తమయం", day.sunset)
-                        DetailRow("చంద్రోదయం", day.moonrise)
-                        DetailRow("చంద్రాస్తమయం", day.moonset)
-                    }
-                }
-            }
-
-            if (day.muhurtas.isNotEmpty()) {
-                item { SectionHeader("రాహు కాలం, యమగండం", "Inauspicious windows") }
-                item {
-                    Column(Modifier.padding(horizontal = 16.dp)) {
-                        OutlinedBlock {
-                            day.muhurtas.forEachIndexed { i, m ->
-                                if (i > 0) ThinDivider()
-                                DetailRow(m.teluguLabel, "${m.start} – ${m.end}", m.label)
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (day.choghadiya.isNotEmpty()) {
-                item { SectionHeader("చౌఘడియ", "Choghadiya") }
-                item {
-                    Column(Modifier.padding(horizontal = 16.dp)) {
-                        OutlinedBlock {
-                            day.choghadiya.forEachIndexed { i, c ->
-                                if (i > 0) ThinDivider()
-                                val quality = when (c.quality) {
-                                    ChoghadiyaQuality.GOOD -> "శుభం"
-                                    ChoghadiyaQuality.NEUTRAL -> "సమం"
-                                    ChoghadiyaQuality.INAUSPICIOUS -> "అశుభం"
-                                }
-                                DetailRow("${c.telugu}  ·  $quality", "${c.start} – ${c.end}", c.name)
-                            }
-                        }
-                    }
-                }
+            beyondViewportPageCount = 0
+        ) { page ->
+            val pageDate = date.plusDays((page - DAY_CENTRE).toLong())
+            val day = remember(pageDate, city.id) { panchangRepository.dayDetail(pageDate, city) }
+            val festivals = remember(pageDate) { festivalRepository.onDate(pageDate) }
+            val now = LocalDateTime.now(city.zone)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(bottom = 32.dp)
+            ) {
+                panchangDayItems(day, festivals, now, onFestivalSelected)
             }
         }
-    }
-}
-
-@Composable
-private fun FestivalRow(festival: Festival, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(Ink.Wash)
-            .clickable(onClick = onClick)
-            .padding(14.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(Modifier.weight(1f)) {
-            Text(festival.teluguName, style = MaterialTheme.typography.titleMedium)
-            Text(festival.name, style = MaterialTheme.typography.bodySmall)
-        }
-        Spacer(Modifier.width(8.dp))
-        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = Ink.Secondary)
     }
 }
