@@ -3,18 +3,17 @@ package com.panchangam.telugupanchangam.domain
 import java.time.LocalDate
 
 /**
- * Ports the UI depends on. `data/` provides today's mock implementation;
- * a real deterministic Panchangam backend can replace it without any
- * change to the Compose layer.
+ * Ports the UI depends on. `data/` provides the astronomical
+ * implementation; the Compose layer never touches the maths directly.
  */
 interface PanchangRepository {
-    fun dayDetail(date: LocalDate): PanchangDay
-    fun range(start: LocalDate, end: LocalDate): Map<LocalDate, PanchangDay>
+    fun dayDetail(date: LocalDate, city: City): PanchangDay
+    fun summaries(start: LocalDate, end: LocalDate, city: City): Map<LocalDate, DaySummary>
 }
 
 interface FestivalRepository {
     fun all(): List<Festival>
     fun byId(id: String): Festival?
-    fun upcoming(from: LocalDate = LocalDate.now(), limit: Int = 50): List<Festival>
+    fun upcoming(from: LocalDate, limit: Int = 50): List<Festival>
     fun onDate(date: LocalDate): List<Festival>
 }
