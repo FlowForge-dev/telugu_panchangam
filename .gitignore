@@ -12,3 +12,7 @@ captures/
 *.jks
 *.keystore
 key.properties
+.kotlin/
+xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/

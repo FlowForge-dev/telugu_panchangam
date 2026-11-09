@@ -1,7 +1,8 @@
 # Telugu Panchangam
 
-A native Android Panchangam and calendar app for Telugu users, written in
-Kotlin with Jetpack Compose. Daily Panchangam is computed on the phone, for
+A Panchangam and calendar app for Telugu users on **Android and iOS**, written
+in Kotlin with Compose Multiplatform: one codebase for the astronomy, data and
+every screen. Daily Panchangam is computed on the phone, for
 the user's city, for any date; festival dates carry per-entry citations.
 
 The interface is monochrome: hierarchy comes from value, weight and spacing
@@ -12,11 +13,21 @@ themes follow the system or a user setting.
 
 | | |
 |---|---|
-| Language | Kotlin |
-| UI | Jetpack Compose + Material 3 |
-| Navigation | `navigation-compose` |
-| Build | Gradle 9.1 / AGP 9.0.1 (built-in Kotlin) |
-| Min / target SDK | 26 / 36 |
+| Language | Kotlin 2.3 (Multiplatform) |
+| UI | Compose Multiplatform 1.11 + Material 3 |
+| Navigation | `navigation-compose` (multiplatform) |
+| Dates | `kotlinx-datetime` |
+| Build | Gradle 9.1 / AGP 9.0.1 |
+| Android | min / target SDK 26 / 36 |
+| iOS | iOS 16+, iPhone and iPad |
+
+## Layout
+
+| Module | What |
+|---|---|
+| `shared/` | Everything: astronomy, Panchangam engine, festival data and all Compose screens (`commonMain`); the iOS entry point, settings in `NSUserDefaults` and the share sheet (`iosMain`) |
+| `app/` | Android shell: `MainActivity`, `SharedPreferences`, share intent, icons |
+| `iosApp/` | Xcode project: a SwiftUI shell that hosts `MainViewController()` from `shared` |
 
 ## Screens
 
@@ -111,13 +122,47 @@ traditional source.
 
 ## Build
 
+### Android
+
 ```bash
 ./gradlew :app:assembleDebug
-./gradlew :app:testDebugUnitTest
 ```
 
 The APK lands in `app/build/outputs/apk/debug/`. Set `sdk.dir` in
 `local.properties` (gitignored) to your Android SDK path first.
+
+### iOS
+
+Needs a Mac with Xcode 16+ and JDK 17+.
+
+1. Open `iosApp/iosApp.xcodeproj` in Xcode.
+2. Pick an iPhone simulator and press Run. The *Compile Kotlin Framework*
+   build phase runs `./gradlew :shared:embedAndSignAppleFrameworkForXcode`,
+   so the first build takes a few minutes.
+3. To run on a phone or upload to the App Store, set `TEAM_ID` in
+   `iosApp/Configuration/Config.xcconfig` (and change `BUNDLE_ID` if needed),
+   then use Product → Archive.
+
+From the command line:
+
+```bash
+xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp \
+  -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+  CODE_SIGNING_ALLOWED=NO build
+```
+
+The `iOS` GitHub Actions workflow does this on every push. It runs the shared
+tests on the iOS simulator and uploads the simulator `.app` as an artifact.
+
+### Tests
+
+```bash
+./gradlew :shared:jvmTest                  # any machine
+./gradlew :shared:iosSimulatorArm64Test    # Mac only
+```
+
+On Linux, `./gradlew :shared:compileKotlinIosArm64` still checks that the iOS
+code compiles. Linking the app needs a Mac.
 
 ## Screenshots
 

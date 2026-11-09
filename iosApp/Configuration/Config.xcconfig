@@ -1,0 +1,6 @@
+// Set TEAM_ID to your Apple Developer team (Xcode → Settings → Accounts)
+// to run on a device or archive for the App Store. The simulator needs none.
+TEAM_ID=
+
+BUNDLE_ID=com.panchangam.telugupanchangam
+APP_NAME=Telugu Panchangam
