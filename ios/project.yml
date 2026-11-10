@@ -1,0 +1,61 @@
+# XcodeGen spec — run `xcodegen generate` in this folder to create
+# TeluguPanchangam.xcodeproj (the generated project is not committed).
+name: TeluguPanchangam
+
+options:
+  bundleIdPrefix: com.panchangam
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "2.0.0"
+    CURRENT_PROJECT_VERSION: "2"
+
+targets:
+  TeluguPanchangam:
+    type: application
+    platform: iOS
+    sources:
+      - TeluguPanchangam
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.panchangam.telugupanchangam
+        PRODUCT_NAME: TeluguPanchangam
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Panchangam
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+
+  TeluguPanchangamTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - TeluguPanchangamTests
+    dependencies:
+      - target: TeluguPanchangam
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.panchangam.telugupanchangam.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  TeluguPanchangam:
+    build:
+      targets:
+        TeluguPanchangam: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - TeluguPanchangamTests
+    archive:
+      config: Release

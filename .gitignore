@@ -12,3 +12,11 @@ captures/
 *.jks
 *.keystore
 key.properties
+.kotlin/
+
+# iOS
+*.xcodeproj/
+*.ipa
+Payload/
+DerivedData/
+xcuserdata/
